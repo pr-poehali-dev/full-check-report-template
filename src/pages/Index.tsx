@@ -98,12 +98,22 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-slate-100 font-sans">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         body {
-          font-family: 'Roboto', sans-serif;
+          font-family: 'Inter', sans-serif;
+          background: #f1f5f9;
+        }
+        
+        .confidential-shadow {
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        .report-border {
+          border: 2px solid #e2e8f0;
+          border-left: 4px solid #dc2626;
         }
         
         @media print {
@@ -151,12 +161,11 @@ const Index = () => {
                 <div className="flex items-center space-x-3">
                   <Button 
                     onClick={exportToPDF}
-                    variant="outline"
                     size="sm"
-                    className="text-sm"
+                    className="bg-red-600 hover:bg-red-700 text-white border-2 border-black text-sm font-semibold shadow-lg transition-all duration-200"
                   >
-                    <Icon name="Download" size={16} className="mr-2" />
-                    Готовый отчёт
+                    <Icon name="Lock" size={16} className="mr-2" />
+                    Конфиденциально!
                   </Button>
                 </div>
               </div>
@@ -166,34 +175,44 @@ const Index = () => {
 
         <TabsContent value="report" className="mt-0">
           <div ref={reportRef} className="max-w-4xl mx-auto p-6 print-full-width">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <div className="bg-white rounded-lg confidential-shadow report-border p-8">
               {/* Заголовок */}
-              <div className="text-center mb-8 border-b border-gray-200 pb-6">
-                <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                  Полная проверка на верность
-                </h1>
-                <div className="flex justify-between items-center text-sm text-gray-600">
-                  <span>Дата проверки: {reportData.date}</span>
-                  <span className="font-medium">{reportData.reportNumber}</span>
+              <div className="text-center mb-8 border-b-2 border-slate-300 pb-6 bg-slate-50 -mx-8 -mt-8 px-8 pt-8 rounded-t-lg">
+                <div className="flex items-center justify-center mb-4">
+                  <Icon name="Shield" size={28} className="text-red-600 mr-3" />
+                  <h1 className="text-3xl font-bold text-slate-800">
+                    Полная проверка на верность
+                  </h1>
+                  <Icon name="Shield" size={28} className="text-red-600 ml-3" />
+                </div>
+                <div className="flex justify-between items-center text-sm text-slate-600 font-medium">
+                  <span className="bg-slate-200 px-3 py-1 rounded">Дата проверки: {reportData.date}</span>
+                  <span className="bg-red-100 text-red-800 px-3 py-1 rounded font-semibold">{reportData.reportNumber}</span>
                 </div>
               </div>
 
               {/* Информация о заказчике */}
-              <Card className="mb-6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-gray-800">Информация о заказчике</CardTitle>
+              <Card className="mb-6 border-2 border-slate-300">
+                <CardHeader className="pb-3 bg-slate-100 rounded-t-md">
+                  <CardTitle className="text-lg text-slate-800 font-semibold flex items-center">
+                    <Icon name="User" size={18} className="mr-2 text-slate-600" />
+                    Информация о заказчике
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700">{reportData.clientInfo || 'Не указана'}</p>
+                <CardContent className="bg-white">
+                  <p className="text-slate-700 font-medium">{reportData.clientInfo || 'Не указана'}</p>
                 </CardContent>
               </Card>
 
               {/* Общая информация о второй половине */}
-              <Card className="mb-6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-gray-800">Общая информация о второй половине</CardTitle>
+              <Card className="mb-6 border-2 border-slate-300">
+                <CardHeader className="pb-3 bg-slate-100 rounded-t-md">
+                  <CardTitle className="text-lg text-slate-800 font-semibold flex items-center">
+                    <Icon name="Search" size={18} className="mr-2 text-slate-600" />
+                    Общая информация о второй половине
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 bg-white">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label className="text-sm font-medium text-gray-600">ФИО и дата рождения</Label>
@@ -234,9 +253,10 @@ const Index = () => {
               </Card>
 
               {/* Анализ профиля ВКонтакте */}
-              <Card className="mb-6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-gray-800">
+              <Card className="mb-6 border-2 border-slate-300">
+                <CardHeader className="pb-3 bg-slate-100 rounded-t-md">
+                  <CardTitle className="text-lg text-slate-800 font-semibold flex items-center">
+                    <Icon name="Globe" size={18} className="mr-2 text-slate-600" />
                     Полный цифровой анализ основного профиля ВКонтакте
                     {reportData.vkProfile && (
                       <span className="text-sm font-normal text-blue-600 ml-2">
@@ -245,20 +265,21 @@ const Index = () => {
                     )}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 leading-relaxed">{reportData.vkAnalysis}</p>
+                <CardContent className="bg-white">
+                  <p className="text-slate-700 leading-relaxed">{reportData.vkAnalysis}</p>
                 </CardContent>
               </Card>
 
               {/* Дополнительные аккаунты */}
-              <Card className="mb-6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg text-gray-800">
+              <Card className="mb-6 border-2 border-slate-300">
+                <CardHeader className="pb-3 bg-slate-100 rounded-t-md">
+                  <CardTitle className="text-lg text-slate-800 font-semibold flex items-center">
+                    <Icon name="Users" size={18} className="mr-2 text-slate-600" />
                     Детальный обзор найденных дополнительных аккаунтов в соцсетях и на сайтах знакомств и флирта
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 leading-relaxed">
+                <CardContent className="bg-white">
+                  <p className="text-slate-700 leading-relaxed">
                     В рамках комплексной проверки на верность вашей второй половины, проведённой по всем открытым источникам с использованием специального ПО, нами выявлена связь с похожими аккаунтами в соцсетях и на сайтах знакомств, включая скрытые и удалённые профили. По результатам анализа, с уверенностью 99,9% заявляем, что эти аккаунты не принадлежат вашей второй половине и с ней не связаны. Отсутствие активных и скрытых профилей свидетельствует, что вторая половина не ведёт знакомства в интернете и не скрывает личность.
                   </p>
                 </CardContent>
@@ -318,12 +339,13 @@ const Index = () => {
               </Card>
 
               {/* Уведомление для заказчика */}
-              <div className="text-xs text-gray-500 mt-6 border-t border-gray-200 pt-4">
+              <div className="text-xs text-slate-700 mt-6 bg-slate-100 p-4 rounded-md border-l-4 border-slate-400">
+                <Icon name="AlertTriangle" size={16} className="inline mr-2 text-slate-600" />
                 Благодарим Вас за обращение и доверие к нашим услугам. В целях обеспечения анонимности и защиты конфиденциальных данных все отчёты отправляются исключительно заказчику и после отправки автоматически удаляются с наших серверов, исключая возможность повторной отправки.
               </div>
 
               {/* Подвал */}
-              <div className="text-center text-xs text-gray-400 mt-8 border-t border-gray-200 pt-4">
+              <div className="text-center text-xs text-white mt-8 bg-slate-800 -mx-8 -mb-8 px-8 py-6 rounded-b-lg">
                 © All Rights Reserved. Proverka.Vernosti 2025.
               </div>
             </div>
@@ -332,7 +354,7 @@ const Index = () => {
 
         <TabsContent value="params" className="mt-0">
           <div className="max-w-4xl mx-auto p-6">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <div className="bg-white rounded-lg confidential-shadow report-border p-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                 <Icon name="Heart" size={24} className="mr-3 text-red-500" />
                 Параметры отчёта
